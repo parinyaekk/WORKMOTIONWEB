@@ -53,9 +53,11 @@ class SidebarNavItem extends React.Component {
         {hasSubItems && (
           <Collapse tag={DropdownMenu} small open={item.open} style={{ top: 0 }}>
             {item.items.map((subItem, idx) => (
+              typeof subItem.to !== 'undefined' ? 
               <DropdownItem key={idx} tag={RouteNavLink} to={subItem.to}>
                 {subItem.title}
               </DropdownItem>
+              : "งง"
             ))}
           </Collapse>
         )}

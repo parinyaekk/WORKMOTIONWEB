@@ -45,7 +45,7 @@ class SidebarMainNavbar extends React.Component {
               )} */}
               {(
                 <span className="d-none d-md-inline ml-1">
-                  American Standard
+                  Top Venture Admin
                 </span>
               )}
             </div>

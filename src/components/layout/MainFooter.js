@@ -8,16 +8,6 @@ const MainFooter = ({ contained, menuItems, copyright }) => (
   <footer className="main-footer d-flex p-2 px-3 bg-white border-top">
     <Container fluid={contained}>
       <Row>
-      <span className="copyright">{"ผู้เข้าชมทั้งหมด :" + " " + localStorage.getItem("CountNumber").replace(/(.)(?=(\d{3})+$)/g,'$1,')}</span>
-        {/* <Nav>
-          {menuItems.map((item, idx) => (
-            <NavItem key={idx}>
-              <NavLink tag={Link} to={item.to}>
-                {item.title}
-              </NavLink>
-            </NavItem>
-          ))}
-        </Nav> */}
         <span className="copyright ml-auto my-auto mr-2">{copyright}</span>
       </Row>
     </Container>

@@ -41,6 +41,7 @@
     "react-scripts": "2.1.1",
     "react-select": "^4.2.1",
     "react-strap-table": "^1.0.7",
+    "react-switch": "^6.0.0",
     "react-table": "^6.11.5",
     "react-tabs": "^3.2.2",
     "shards-react": "^1.0.0",
