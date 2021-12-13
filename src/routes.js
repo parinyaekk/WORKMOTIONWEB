@@ -8,6 +8,9 @@ import { Layout_Login } from "./layouts/Layout_Login";
 import Login from "./views/Login";
 import Banner from "./views/Banner";
 import Test from "./views/Test";
+import StartUp from "./views/StartUp";
+import Fund from "./views/Fund";
+import Partnership from "./views/Partnership";
 
 export default [
   
@@ -31,5 +34,21 @@ export default [
     path: "/Test",
     layout: DefaultLayout,
     component: Test
+  },  
+  {
+    path: "/StartUp",
+    layout: DefaultLayout,
+    component: StartUp
   },
+  {
+    path: "/Fund",
+    layout: DefaultLayout,
+    component: Fund
+  },
+  {
+    path: "/Partnership",
+    layout: DefaultLayout,
+    component: Partnership
+  },
+
 ];

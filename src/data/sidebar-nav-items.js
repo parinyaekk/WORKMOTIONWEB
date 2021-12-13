@@ -12,7 +12,7 @@ export default function () {
         {
           title: 'HomePage',
           htmlBefore: '<i class="material-icons">desktop_windows</i>',
-          open: true,
+          open: false,
           items: [{
             title: 'Banner',
             to: '/Banner',
@@ -20,6 +20,22 @@ export default function () {
             title: 'Test',
             to: '/Test',
           }],
+        },
+        {
+          title: 'Portfolio',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'StartUp',
+            to: '/StartUp',
+          },{
+            title: 'Fund',
+            to: '/Fund',
+          },{
+            title: 'Partnership',
+            to: '/Partnership',
+          },
+          ],
         }
       ]
     }
