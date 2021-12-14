@@ -336,7 +336,7 @@ class StartUp extends React.Component {
                       alt="Edit"
                     />
                   </button>
-                <button style={{ marginTop: '-9px' }} type="button" class="btn btn-datatable" onClick={() => this.DeleteDataBanner(item.portfolio_ID)}>
+                <button style={{ marginTop: '-9px' }} type="button" class="btn btn-datatable" onClick={() => this.DeleteDataPortfolio(item.portfolio_ID)}>
                   <img
                     class="img-manage"
                     src={require("../images/DeleteIcon.png")}
@@ -553,14 +553,14 @@ class StartUp extends React.Component {
     this.setState({ input_Portfolio_Contact_LinkedIn: event.target.value });
   }
 
-  DeleteDataBanner(val) {
+  DeleteDataPortfolio(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
     if (popconfirm) {
-      axios.delete(`${APIUrl}Banner/DeleteDataBanner?Banner_ID=` + val)
+      axios.delete(`${APIUrl}Portfolio/DeleteDataPortfolio?Portfolio_ID=` + val)
       .then(async (response) => {
         if (response.data.status == 0) {
           alert(response.data.message);
-          await this.GetBannerTable();
+          await this.GetStartUpTable();
         }
       })
       .catch((err) => {

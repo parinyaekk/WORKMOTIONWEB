@@ -11,6 +11,7 @@ import Test from "./views/Test";
 import StartUp from "./views/StartUp";
 import Fund from "./views/Fund";
 import Partnership from "./views/Partnership";
+import News from "./views/News";
 
 export default [
   
@@ -49,6 +50,11 @@ export default [
     path: "/Partnership",
     layout: DefaultLayout,
     component: Partnership
+  },
+  {
+    path: "/News",
+    layout: DefaultLayout,
+    component: News
   },
 
 ];

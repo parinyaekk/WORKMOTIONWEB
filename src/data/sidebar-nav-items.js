@@ -36,7 +36,17 @@ export default function () {
             to: '/Partnership',
           },
           ],
-        }
+        },
+        {
+          title: 'News',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'News & Activity',
+            to: '/News',
+          },
+          ],
+        },
       ]
     }
   ];

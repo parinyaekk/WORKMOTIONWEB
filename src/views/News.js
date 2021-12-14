@@ -18,11 +18,18 @@ import {
 } from 'mdbreact';
 import LoadingOverlay from "react-loading-overlay";
 import ChipInput from 'material-ui-chip-input'
+import Switch from "react-switch";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+
 
 const APIUrl = global.config.variable.Url;
 const APIImagePath = global.config.variable.ImagePath;
 
-class Partnership extends React.Component {
+class News extends React.Component {
 
   render() {
     return (
@@ -53,11 +60,11 @@ class Partnership extends React.Component {
                         <div className="card-header">
                           <div className="row">
                             <div className="col-md-6">
-                              <h1>Partnership</h1>
+                              <h1>News & Activity</h1>
                             </div>
                             <div className="col-md-6">
                               <div class="float-right">
-                                <button class="btn btn-outline-info" type="button" style={{ width: '100%' }} data-toggle="modal" data-target="#PopData" data-backdrop="static" onClick={() => null}><Plus />&nbsp; Add Partnership</button>
+                                <button class="btn btn-outline-info" type="button" style={{ width: '100%' }} data-toggle="modal" data-target="#PopData" data-backdrop="static" onClick={() => null}><Plus />&nbsp; Add News & Activity</button>
                               </div>
                             </div>
                           </div>
@@ -82,7 +89,7 @@ class Partnership extends React.Component {
                   <div className="editmodal-dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <h1>{this.state.txtTopicPopData}&nbsp;Partnership</h1>
+                        <h1>{this.state.txtTopicPopData}&nbsp;News & Activity</h1>
                         <button type="button" className="close" onClick={() => this.ClosePopData()} data-dismiss="modal">&times;</button>
                       </div>
                       <div className="modal-body">
@@ -95,49 +102,74 @@ class Partnership extends React.Component {
                                 options={this.state.optionsIndustries}
                               />
                             </div> */}
+                            <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <label className="small mb-1">News Title</label>
+                              <input className="form-control py-1" type="text" value={this.state.input_News_Title} onChange={this.setStateinput_News_Title} />
+                            </div>
+                            <div className="form-group center col-md-6" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <label className="small mb-1">News Author</label>
+                              <input className="form-control py-1" type="text" value={this.state.input_News_Author} onChange={this.setStateinput_News_Author} />
+                            </div>
+                            <div className="form-group center col-md-6" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <label className="small mb-1">News Publish Date</label>
+                              <input className="form-control py-1" type="date" value={this.state.input_News_Publish_Date} placeholder="dd/mm/yyyy" onChange={this.setStateinput_News_Publish_Date} />
+                            </div>
                             <div className="form-group col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                              <label className="small mb-1">Logo</label>
+                              <label className="small mb-1">News Main Image</label>
                               <br></br>
                               <input id="LogoFile" type="file" class="form-control-file" onChange={this.onFileChange} />
-                              {this.state.input_Portfolio_Logo_Path != null ? 
-                                <img class="table-img" src={`${APIImagePath}` + this.state.input_Portfolio_Logo_Path} /> : ""}
+                              {this.state.input_News_Main_Image_Path != null ? 
+                                <img class="table-img" src={`${APIImagePath}` + this.state.input_News_Main_Image_Path} /> : ""}
                             </div>
                             <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                              <label className="small mb-1">Name</label>
-                              <input className="form-control py-1" type="text" value={this.state.input_Portfolio_Name} onChange={this.setStateinput_Portfolio_Name} />
-                            </div>
-                            <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                              <label className="small mb-1">About</label>
-                              <textarea className="form-control py-1" rows="5" value={this.state.input_Portfolio_About} onChange={this.setStateinput_Portfolio_About} />
-                            </div>
-                            {/* <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                               <ChipInput
                                 fullWidth
-                                label='Technology'
-                                placeholder='Type and press enter to add Technology Tags'
-                                defaultValue={this.state.input_Portfolio_Technology}
-                                // value={this.state.input_Portfolio_Technology}
-                                onChange={this.setStateinput_Portfolio_Technology}
-                                onDelete={this.deleteStateinput_Portfolio_Technology}
+                                label='News Tags'
+                                placeholder='Type and press enter to add News Tags'
+                                defaultValue={this.state.input_News_Tags}
+                                onChange={this.setStateinput_News_Tags}
+                                onDelete={this.deleteStateinput_News_Tags}
                               />
-                            </div> */}
-                            <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                              <label className="small mb-1">Location</label>
-                              <input className="form-control py-1" type="text" value={this.state.input_Portfolio_Location} onChange={this.setStateinput_Portfolio_Location} />
                             </div>
                             <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                              <label className="small mb-1">Contact Website</label>
-                              <input className="form-control py-1" type="text" value={this.state.input_Portfolio_Contact_Website} onChange={this.setStateinput_Portfolio_Contact_Website} />
+                              <label className="small mb-1">News Content</label>
+                              <div
+                                style={{
+                                  display: "block",
+                                  border: "1px solid black",
+                                  padding: "2px",
+                                }}
+                              >
+                                <Editor
+                                  editorState={this.state.input_News_Content}
+                                  onEditorStateChange={this.onEditorStateChangeinput_News_Content}
+                                />
+                              </div>
                             </div>
-                            <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                              <label className="small mb-1">Contact LinkedIn</label>
-                              <input className="form-control py-1" type="text" value={this.state.input_Portfolio_Contact_LinkedIn} onChange={this.setStateinput_Portfolio_Contact_LinkedIn} />
+                            <div className="form-group col-md-6" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <label className="small mb-1">Image</label>
+                              <br></br>
+                              <input type="file" onChange={this.onFileMultipleChange} multiple="multiple" />
+                            </div>
+                            <div className="form-group col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <table className="table table-bordered table-hover" width="100%" cellSpacing="0">
+                                <thead>
+                                  <tr>
+                                    <th>รูปตัวอย่าง</th>
+                                    <th>ชื่อ</th>
+                                    <th>ลบ</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {this.renderTableFile()}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                           <div className="row">
                             <div className="form-group col-md-12">
                               <div className="float-right">
-                                <input type="submit" value={this.state.txtTopicPopData + " Data"} className="btn btn-success" style={{marginTop:"24px"}} onClick={() => this.UpdatePartnership()}/>
+                                <input type="submit" value={this.state.txtTopicPopData + " Data"} className="btn btn-success" style={{marginTop:"24px"}} onClick={() => this.UpdateNews()}/>
                               </div>
                             </div>
                           </div>
@@ -187,6 +219,15 @@ class Partnership extends React.Component {
             margin-top: -7px !important;\
             margin-left: -15px !important;\
         }\
+        .rdw-editor-main {\
+          height: 300px;\
+          overflow: auto;\
+          box-sizing: border-box;\
+        }\
+        .rdw-option-wrapper{ \
+          border:0px solid #f1f1f1;\
+          padding:5px;min-width:25px;height:20px;border-radius:2px;margin:0 4px;display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center;cursor:pointer;background:#fff;text-transform:capitalize\
+        }\
       "}</style>
         </Container>
        </LoadingOverlay>
@@ -194,8 +235,8 @@ class Partnership extends React.Component {
   }
 
   async componentWillMount() {
-    // await this.GetOptionsIndustries();
-    await this.GetPartnershipTable();
+    await this.GetOptionsIndustries();
+    await this.GetNewsTable();
   }
 
   constructor(props) {
@@ -205,57 +246,52 @@ class Partnership extends React.Component {
       PerPage: 5,
       txtTopicPopData: 'Add',
       ResData: null,
-      input_Portfolio_ID: null,
-      input_FK_Industries_ID: null,
-      input_Portfolio_Name: '',
-      input_Portfolio_About: '',
-      input_Portfolio_Technology: null,
-      input_Portfolio_Location: '',
-      input_Portfolio_Contact_Website: '',
-      input_Portfolio_Contact_LinkedIn: '',
-      input_Portfolio_Logo_Path: null,
-      optionsIndustries: [],
-      portfolio_table: [],
+      input_News_ID: null,
+      input_News_Title: '',
+      input_News_Content: '',
+      input_News_Main_Image_Path: null,
+      input_News_Author: '',
+      input_News_Tags: null,
+      input_News_Publish_Date: null,
+      input_Is_Display: null,
+      News_table: [],
       ArrFile: [],
+      ArrMultipleFile: [],
       columns: [
         {
-          label: 'Logo',
-          field: 'portfolio_Logo_Path',
+          label: 'Image',
+          field: 'news_Main_Image_Path',
           width: 270
         },     
         {
-          label: 'Name',
-          field: 'portfolio_Name',
+          label: 'News Title',
+          field: 'news_Title',
           width: 150
         },   
-        // {
-        //   label: 'Industries',
-        //   field: 'industries_Name',
-        //   width: 150
-        // },
         {
-          label: 'About',
-          field: 'portfolio_About',
+          label: 'News Content',
+          field: 'news_Content',
+          width: 150
+        },
+
+        {
+          label: 'News Author',
+          field: 'news_Author',
           width: 200
         },
-        // {
-        //   label: 'Technology',
-        //   field: 'portfolio_Technology',
-        //   width: 100
-        // },
         {
-          label: 'Location',
-          field: 'portfolio_Location',
+          label: 'News Tags',
+          field: 'news_Tags',
+          width: 100
+        },
+        {
+          label: 'News Publish Date',
+          field: 'news_Publish_Date',
           width: 150
         },
         {
-          label: 'Contact Website',
-          field: 'portfolio_Contact_Website',
-          width: 150
-        },
-        {
-          label: 'Contact LinkedIn',
-          field: 'portfolio_Contact_LinkedIn',
+          label: 'Show',
+          field: 'is_Display',
           width: 150
         },
         {
@@ -306,11 +342,11 @@ class Partnership extends React.Component {
     }
   }
 
-  async GetPartnershipTable() {
+  async GetNewsTable() {
     var _this = this;
     _this.setState({ loading: true });
     await axios
-      .get(`${APIUrl}Portfolio/GetPartnershipTable`)
+      .get(`${APIUrl}News/GetNewsTable`)
       .then(response => {
         if (response.data.status == 0) {
           this.setState({ loading: false, ResData: response.data.data});
@@ -318,24 +354,23 @@ class Partnership extends React.Component {
 
           response.data.data.map((item) => {
             let TempSubData = {
-              portfolio_Logo_Path: item.portfolio_Logo_Path,
-              portfolio_Name: item.portfolio_Name,
-              // industries_Name: item.industries_Name,
-              portfolio_About: item.portfolio_About.length > 20 ? item.portfolio_About.substring(0,20) + "..." : item.portfolio_About,
-              portfolio_Technology: item.portfolio_Technology,
-              portfolio_Location: item.portfolio_Location,
-              portfolio_Contact_Website: item.portfolio_Contact_Website,
-              portfolio_Contact_LinkedIn: item.portfolio_Contact_LinkedIn,
+              news_Main_Image_Path: item.news_Main_Image_Path,
+              news_Title: item.news_Title,
+              news_Content: item.news_Content.length > 20 ? item.news_Content.substring(0,20) + "..." : item.news_Content,
+              news_Author: item.news_Author,
+              news_Tags: item.news_Tags,
+              news_Publish_Date: item.news_Publish_Date,
+              is_Display: <Switch onChange={() => this.SetDisplayNews(item.news_ID)} checked={item.is_Display} />,
               Action: 
               <div>
-                <button style={{ marginTop: '-9px'}} type="button" class="btn btn-datatable" data-toggle="modal" data-target="#PopData" data-backdrop="static" onClick={() => this.OpenEditPopup(item.portfolio_ID)}>
+                <button style={{ marginTop: '-9px'}} type="button" class="btn btn-datatable" data-toggle="modal" data-target="#PopData" data-backdrop="static" onClick={() => this.OpenEditPopup(item.news_ID)}>
                     <img
                       class="img-manage"
                       src={require("../images/editor.png")}
                       alt="Edit"
                     />
                   </button>
-                <button style={{ marginTop: '-9px' }} type="button" class="btn btn-datatable" onClick={() => this.DeleteDataPortfolio(item.portfolio_ID)}>
+                <button style={{ marginTop: '-9px' }} type="button" class="btn btn-datatable" onClick={() => this.DeleteDataNews(item.news_ID)}>
                   <img
                     class="img-manage"
                     src={require("../images/DeleteIcon.png")}
@@ -362,75 +397,116 @@ class Partnership extends React.Component {
 
   OpenEditPopup(value) {
     var _this = this;
-    var PortfolioID = value;
+    var NewsID = value;
     this.setState({ txtTopicPopData: 'Edit' });
-    var FindData = this.state.ResData.filter(x => x.portfolio_ID == parseInt(PortfolioID));
+    var FindData = this.state.ResData.filter(x => x.news_ID == parseInt(NewsID));
 
-    var Arr_Portfolio_Technology = [];
+    var Arr_News_Tags = [];
 
-    if(!!FindData[0].portfolio_Technology)
+    if(!!FindData[0].news_Tags)
     {
-      FindData[0].portfolio_Technology.split(',').forEach(element => {
-        Arr_Portfolio_Technology.push(element)
+      FindData[0].news_Tags.split(',').forEach(element => {
+        Arr_News_Tags.push(element)
       });
     }
-    
-    var tempIndustries = {
-      value: FindData[0].industries_ID,
-      label: FindData[0].industries_Name
-    };
 
+    
+    var txteditorState = null;
+    if(FindData != null)
+    {        
+      const contentBlock = htmlToDraft(this.ChangeFormatStringBR(FindData[0].news_Content));
+      if (contentBlock) {
+        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        txteditorState = EditorState.createWithContent(contentState);
+      }
+    }
+    
     _this.setState({
-      input_Portfolio_ID:  parseInt(PortfolioID),
-      input_FK_Industries_ID: tempIndustries,
-      // input_FK_Industries_ID: FindData[0].industries_ID,
-      input_Portfolio_Name: FindData[0].portfolio_Name,
-      input_Portfolio_Logo_Path: FindData[0].portfolio_Logo_Path,
-      input_Portfolio_About: FindData[0].portfolio_About,
-      input_Portfolio_Technology:  Arr_Portfolio_Technology,
-      input_Portfolio_Location: FindData[0].portfolio_Location,
-      input_Portfolio_Contact_Website: FindData[0].portfolio_Contact_Website,
-      input_Portfolio_Contact_LinkedIn: FindData[0].portfolio_Contact_LinkedIn,
+      input_News_ID:  parseInt(NewsID),
+      input_News_Title: FindData[0].news_Title,
+      input_News_Main_Image_Path: FindData[0].news_Main_Image_Path,
+      input_News_Content: txteditorState,
+      input_News_Tags: Arr_News_Tags,
+      input_News_Author: FindData[0].news_Author,
+      input_News_Publish_Date: FindData[0].news_Publish_Date,
+      // input_News_Publish_Date: FindData[0].news_Publish_Date == null ? "" : (parseInt(FindData[0].news_Publish_Date.split('/')[2]) + 543) + '-' + FindData[0].news_Publish_Date.split('/')[1] + '-' + FindData[0].news_Publish_Date.split('/')[0],
     });
 
-    _this.handleChangeIndustries(tempIndustries);
+    // this.setState({ ArrMultipleFile: FindData[0].listImages });
 
+    var ArrMultipleTemp = [];
+    Array.prototype.forEach.call(FindData[0].listImages, function (index) {
+      var FileObj = {
+        File: {
+          id: index.news_File_ID,
+          name: index.news_File_Name,
+          path: index.news_File_Path
+        },
+        Type: "Old"
+      };
+      ArrMultipleTemp.push(FileObj);
+    });
+    this.setState({ ArrMultipleFile: ArrMultipleTemp });
   }
 
-  async UpdatePartnership() {
+  async UpdateNews() {
     var _this = this;
 
-    if(!_this.state.input_Portfolio_Name)
+    if(!_this.state.input_News_Title)
     {
-      alert('Please fill [Partnership Name] !');
+      alert('Please fill [News Topic] !');
     }
     else
     {
       _this.setState({ loading: true });
-      // var txtinput_Portfolio_Technology = '';
-      // if(!!_this.state.input_Portfolio_Technology)
-      // {
-      //   _this.state.input_Portfolio_Technology.forEach(element => {
-      //     txtinput_Portfolio_Technology += element + ','
-      //   });
 
-      //   txtinput_Portfolio_Technology = txtinput_Portfolio_Technology.substring(0,txtinput_Portfolio_Technology.length - 1)
-      // }
+      var temp = [];
+
+      Array.prototype.forEach.call(this.state.ArrMultipleFile, function (index) {
+        if (index.Type == "Old") {
+          temp.push(index.File);
+        }
+      });
+
+      var txtinput_News_Tags = '';
+      if(!!_this.state.input_News_Tags)
+      {
+        _this.state.input_News_Tags.forEach(element => {
+          txtinput_News_Tags += element + ','
+        });
+
+        txtinput_News_Tags = txtinput_News_Tags.substring(0,txtinput_News_Tags.length - 1)
+      }
 
 
       const Tempdata = {
-        Portfolio_ID: !_this.state.input_Portfolio_ID ? null : _this.state.input_Portfolio_ID,
-        // FK_Industries_ID: !_this.state.input_FK_Industries_ID ? null : _this.state.input_FK_Industries_ID.value,
-        Portfolio_Section: 3,
-        Portfolio_Name: !_this.state.input_Portfolio_Name ? null : _this.state.input_Portfolio_Name,
-        Portfolio_Logo_Path: !_this.state.input_Portfolio_Logo_Path ? null : _this.state.input_Portfolio_Logo_Path,
-        Portfolio_About: !_this.state.input_Portfolio_About ? null : _this.state.input_Portfolio_About,
-        // Portfolio_Technology: txtinput_Portfolio_Technology,
-        Portfolio_Location: !_this.state.input_Portfolio_Location ? null : _this.state.input_Portfolio_Location,
-        Portfolio_Contact_Website: !_this.state.input_Portfolio_Contact_Website ? null : _this.state.input_Portfolio_Contact_Website,
-        Portfolio_Contact_LinkedIn: !_this.state.input_Portfolio_Contact_LinkedIn ? null : _this.state.input_Portfolio_Contact_LinkedIn,
+        News_ID: !_this.state.input_News_ID ? null : _this.state.input_News_ID,
+        News_Title: !_this.state.input_News_Title ? null : _this.state.input_News_Title,
+        News_Content: !_this.state.input_News_Content ? null : draftToHtml(convertToRaw(_this.state.input_News_Content.getCurrentContent())),
+        News_Main_Image_Path: !_this.state.input_News_Main_Image_Path ? null : _this.state.input_News_Main_Image_Path,
+        News_Author: !_this.state.input_News_Author ? null : _this.state.input_News_Author,
+        News_Publish_Date: this.state.input_News_Publish_Date == undefined ? null : this.state.input_News_Publish_Date,
+        News_Tags: txtinput_News_Tags,
+        File: temp,
       };
-      await axios.post(`${APIUrl}Portfolio/UpdateDataPortfolio`, Tempdata)
+
+      const data = new FormData();
+
+      Array.prototype.forEach.call(this.state.ArrMultipleFile, function (index) {
+        if (index.Type == "New") {
+          data.append('files', index.File);
+        }
+      });
+  
+      data.append('datas', JSON.stringify(Tempdata));
+
+      
+      await axios.post(`${APIUrl}News/UpdateDataNews`, data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
         .then((response) => {
           if (response.data.status == 0) {
             alert(response.data.message);
@@ -488,9 +564,20 @@ class Partnership extends React.Component {
     this.SaveFile(event.target.files[0]);
   };
 
+  
+  onFileMultipleChange = event => {
+    var FileObj = {
+      File: event.target.files[0],
+      Type: "New"
+    };
+    this.state.ArrMultipleFile.push(FileObj);
+    this.forceUpdate();
+  };
+
+
   async SaveFile(file) {
     const data = new FormData();
-    data.append('input_Portfolio_Logo_Path', file);
+    data.append('input_News_Main_Image_Path', file);
     await axios.post(`${APIUrl}Master/UploadImage`, data,
     {
         headers: {
@@ -499,7 +586,7 @@ class Partnership extends React.Component {
     })
     .then((response) => {
         if (response.data.status === 0) {
-            this.setState({ input_Portfolio_Logo_Path: response.data.data });
+            this.setState({ input_News_Main_Image_Path: response.data.data });
             $('#LogoFile').val('');
             this.forceUpdate();
         }
@@ -521,45 +608,44 @@ class Partnership extends React.Component {
     return "";
   }
 
-  setStateinput_Portfolio_Name = event => {
-    this.setState({ input_Portfolio_Name: event.target.value });
+  setStateinput_News_Title = event => {
+    this.setState({ input_News_Title: event.target.value });
   }
 
-  setStateinput_Portfolio_About = event => {
-    this.setState({ input_Portfolio_About: event.target.value });
+  setStateinput_News_Author = event => {
+    this.setState({ input_News_Author: event.target.value });
   }
 
-  setStateinput_Portfolio_Technology = input_Portfolio_Technology => {
-    this.setState({ input_Portfolio_Technology });
+  setStateinput_News_Publish_Date = event => {
+    this.setState({ input_News_Publish_Date: event.target.value });
   }
 
-  deleteStateinput_Portfolio_Technology = event => {
+  setStateinput_News_Tags = input_News_Tags => {
+    this.setState({ input_News_Tags });
+  }
+
+  deleteStateinput_News_Tags = event => {
     var _this = this;
-    var t = _this.input_Portfolio_Technology.filter(x => x != event)
+    var t = _this.input_News_Tags.filter(x => x != event)
     alert(t)
     // this.setState({ input_Portfolio_Technology: event });
   }
 
-  setStateinput_Portfolio_Location = event => {
-    this.setState({ input_Portfolio_Location: event.target.value });
-  }
+  onEditorStateChangeinput_News_Content = input_News_Content => {
+    this.setState({
+      input_News_Content,
+    });
+  };
 
-  setStateinput_Portfolio_Contact_Website = event => {
-    this.setState({ input_Portfolio_Contact_Website: event.target.value });
-  }
 
-  setStateinput_Portfolio_Contact_LinkedIn = event => {
-    this.setState({ input_Portfolio_Contact_LinkedIn: event.target.value });
-  }
-
-  DeleteDataPortfolio(val) {
+  DeleteDataNews(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
     if (popconfirm) {
-      axios.delete(`${APIUrl}Portfolio/DeleteDataPortfolio?Portfolio_ID=` + val)
+      axios.delete(`${APIUrl}News/DeleteDataNews?News_ID=` + val)
       .then(async (response) => {
         if (response.data.status == 0) {
           alert(response.data.message);
-          await this.GetPartnershipTable();
+          await this.GetNewsTable();
         }
       })
       .catch((err) => {
@@ -568,11 +654,11 @@ class Partnership extends React.Component {
     }
   }
 
-  async SetDisplayBanner(val) {
-      await axios.put(`${APIUrl}Banner/SetDisplayBanner?Banner_ID=` + val)
+  async SetDisplayNews(val) {
+      await axios.put(`${APIUrl}News/SetDisplayNews?News_ID=` + val)
       .then(async (response) => {
         if (response.data.status == 0) {
-          await this.GetBannerTable();
+          await this.GetNewsTable();
         }
       })
       .catch((err) => {
@@ -599,7 +685,7 @@ class Partnership extends React.Component {
   }
   
   renderTableFile() {
-    return this.state.ArrFile.map((item, index) => {
+    return this.state.ArrMultipleFile.map((item, index) => {
       if (item.Type == "New") {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -620,4 +706,4 @@ class Partnership extends React.Component {
     });
   }
 }
-export default Partnership;
+export default News;
