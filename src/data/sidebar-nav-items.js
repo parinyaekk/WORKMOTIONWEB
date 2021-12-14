@@ -47,6 +47,16 @@ export default function () {
           },
           ],
         },
+        {
+          title: 'Team',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'Team',
+            to: '/Team',
+          },
+          ],
+        },
       ]
     }
   ];
