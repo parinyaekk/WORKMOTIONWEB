@@ -17,8 +17,8 @@ export default function () {
             title: 'Banner',
             to: '/Banner',
           }, {
-            title: 'Test',
-            to: '/Test',
+            title: 'SEO Banner',
+            to: '/SEO_Banner',
           }],
         },
         {
@@ -34,16 +34,9 @@ export default function () {
           },{
             title: 'Partnership',
             to: '/Partnership',
-          },
-          ],
-        },
-        {
-          title: 'News',
-          htmlBefore: '<i class="material-icons">desktop_windows</i>',
-          open: false,
-          items: [{
-            title: 'News & Activity',
-            to: '/News',
+          },{
+            title: 'SEO Portfolio',
+            to: '/SEO_Portfolio',
           },
           ],
         },
@@ -54,6 +47,35 @@ export default function () {
           items: [{
             title: 'Team',
             to: '/Team',
+          },{
+            title: 'SEO Team',
+            to: '/SEO_Team',
+          },
+          ],
+        },
+        {
+          title: 'News',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'News & Activity',
+            to: '/News',
+          },{
+            title: 'SEO News',
+            to: '/SEO_News',
+          },
+          ],
+        },
+        {
+          title: 'Contact Us',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'ContactDetail',
+            to: '/ContactDetail',
+          },{
+            title: 'SEO ContactUs',
+            to: '/SEO_ContactUs',
           },
           ],
         },

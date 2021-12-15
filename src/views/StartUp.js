@@ -65,6 +65,7 @@ class StartUp extends React.Component {
                         <MDBCardBody>
                           <MDBDataTableV5
                             hover
+                            responsive
                             entriesOptions={[5, 20, 25]}
                             entries={25}
                             data={this.state.portfolio_table}
@@ -266,6 +267,7 @@ class StartUp extends React.Component {
           width: 100
         }
       ],
+      CreateByCookies: Cookies.get('IPAddress')
     };
   }
 
@@ -430,7 +432,9 @@ class StartUp extends React.Component {
         Portfolio_Location: !_this.state.input_Portfolio_Location ? null : _this.state.input_Portfolio_Location,
         Portfolio_Contact_Website: !_this.state.input_Portfolio_Contact_Website ? null : _this.state.input_Portfolio_Contact_Website,
         Portfolio_Contact_LinkedIn: !_this.state.input_Portfolio_Contact_LinkedIn ? null : _this.state.input_Portfolio_Contact_LinkedIn,
+        CreateBy: !this.state.CreateByCookies ? null : this.state.CreateByCookies
       };
+
       await axios.post(`${APIUrl}Portfolio/UpdateDataPortfolio`, Tempdata)
         .then((response) => {
           if (response.data.status == 0) {
@@ -556,7 +560,8 @@ class StartUp extends React.Component {
   DeleteDataPortfolio(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
     if (popconfirm) {
-      axios.delete(`${APIUrl}Portfolio/DeleteDataPortfolio?Portfolio_ID=` + val)
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      axios.delete(`${APIUrl}Portfolio/DeleteDataPortfolio?Portfolio_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           alert(response.data.message);
@@ -570,7 +575,8 @@ class StartUp extends React.Component {
   }
 
   async SetDisplayBanner(val) {
-      await axios.put(`${APIUrl}Banner/SetDisplayBanner?Banner_ID=` + val)
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      await axios.put(`${APIUrl}Banner/SetDisplayBanner?Banner_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           await this.GetBannerTable();

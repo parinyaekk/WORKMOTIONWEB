@@ -7,12 +7,17 @@ import { Layout_Login } from "./layouts/Layout_Login";
 
 import Login from "./views/Login";
 import Banner from "./views/Banner";
-import Test from "./views/Test";
 import StartUp from "./views/StartUp";
 import Fund from "./views/Fund";
 import Partnership from "./views/Partnership";
 import News from "./views/News";
 import Team from "./views/Team";
+import ContactDetail from "./views/ContactDetail";
+import SEO_Banner from "./views/SEO_Banner";
+import SEO_Portfolio from "./views/SEO_Portfolio";
+import SEO_Team from "./views/SEO_Team";
+import SEO_News from "./views/SEO_News";
+import SEO_ContactUs from "./views/SEO_ContactUs";
 
 export default [
   
@@ -32,11 +37,6 @@ export default [
     layout: DefaultLayout,
     component: Banner
   },
-  {
-    path: "/Test",
-    layout: DefaultLayout,
-    component: Test
-  },  
   {
     path: "/StartUp",
     layout: DefaultLayout,
@@ -62,5 +62,34 @@ export default [
     layout: DefaultLayout,
     component: Team
   },
-
+  {
+    path: "/ContactDetail",
+    layout: DefaultLayout,
+    component: ContactDetail
+  },
+  {
+    path: "/SEO_Banner",
+    layout: DefaultLayout,
+    component: SEO_Banner
+  },  
+  {
+    path: "/SEO_Portfolio",
+    layout: DefaultLayout,
+    component: SEO_Portfolio
+  },  
+  {
+    path: "/SEO_Team",
+    layout: DefaultLayout,
+    component: SEO_Team
+  },  
+  {
+    path: "/SEO_News",
+    layout: DefaultLayout,
+    component: SEO_News
+  },  
+  {
+    path: "/SEO_ContactUs",
+    layout: DefaultLayout,
+    component: SEO_ContactUs
+  },  
 ];

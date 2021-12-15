@@ -1,34 +1,32 @@
 import React, { useContext } from "react";
-
+import axios from "axios";
 import Cookies from "js-cookie";
 
 class Login extends React.Component{
 
-  state = {
-    Username: 'admin',
-    Password: '@dminT0pventure',
-    usernames: Cookies.get('username')
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+        IPAddress: '',
+        };
+    } 
 
-  data = {
-    id: null,
-    name: ""
-  }
+    async componentWillMount() {
+        // await this.GetOptionsIndustries();
+        await this.getData();
+    }
 
-  InputUsername = event => {
-    this.setState({ Username: event.target.value });
-  }
-  InputPassword = event => {
-    this.setState({ Password: event.target.value });
-  }
+    async getData() {
+        const res = await axios.get('https://geolocation-db.com/json/')
+        console.log(res.data);
+        this.setState({ IPAddress: res.data.IPv4 });
+        // alert(res.data.IPv4);
+    }
 
-  LoginSubmit = event => {
-    event.preventDefault();
-    if(this.state.Username == "sa" && this.state.Password == "sa")
-    {
+    LoginSubmit() {
+        Cookies.set('IPAddress', this.state.IPAddress, { expires: 0.5 })
         window.location.href = "/Banner";
     }
-  }
 
     render(){
         return(
@@ -41,19 +39,17 @@ class Login extends React.Component{
                                   <div class="card shadow-lg border-0 rounded-lg mt-5">
                                       <div class="card-header justify-content-center"><h3 class="font-weight-light my-4">Login</h3></div>
                                       <div class="card-body">
-                                          <form>
-                                              <div class="form-group">
-                                                  <label className="small mb-1" for="inputUsername">Username</label>
-                                                  <input className="form-control py-4" id="inputUsername" type="text" placeholder="Enter username" onChange={this.InputUsername}/>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label className="small mb-1" for="inputPassword">Password</label>
-                                                  <input className="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" onChange={this.InputPassword}/>
-                                              </div>
-                                              <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0 float-right">
-                                                  <button className="btn btn-primary"  onClick={this.LoginSubmit}>Login</button>
-                                              </div>
-                                          </form>
+                                            <div class="form-group">
+                                                <label className="small mb-1" for="inputIPAddress">IP Address </label>
+                                                <input className="form-control py-4" id="inputIPAddress" type="text" value={this.state.IPAddress} readOnly/>
+                                            </div>
+                                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0 float-right">
+                                                {!this.state.IPAddress ? 
+                                                <button className="btn btn-primary" disabled>Login</button>
+                                                :
+                                                <button className="btn btn-primary" type="button" onClick={() => this.LoginSubmit()}>Login</button>
+                                                }
+                                            </div>
                                       </div>
                                   </div>
                               </div>

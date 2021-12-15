@@ -4,7 +4,9 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "@googlemaps/react-wrapper": "^1.1.17",
     "@k88/module-scope-plugin": "^1.0.3",
+    "@react-google-maps/api": "^2.7.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "camelize": "^1.0.0",
@@ -17,6 +19,7 @@
     "draftjs-to-html": "^0.9.1",
     "feather-icons": "^4.28.0",
     "flux": "^3.1.3",
+    "google-map-react": "^2.1.10",
     "html-to-draftjs": "^1.5.0",
     "i18next": "^19.9.2",
     "i18next-xhr-backend": "^3.2.2",

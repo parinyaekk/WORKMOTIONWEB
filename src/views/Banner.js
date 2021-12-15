@@ -70,6 +70,7 @@ class Banner extends React.Component {
                         <MDBCardBody>
                           <MDBDataTableV5
                             hover
+                            responsive
                             entriesOptions={[5, 20, 25]}
                             entries={25}
                             data={this.state.banner_table}
@@ -255,7 +256,7 @@ class Banner extends React.Component {
           width: 100
         }
       ],
-      imagePathPop: ""
+      CreateByCookies: Cookies.get('IPAddress')
     };
   }
 
@@ -275,6 +276,7 @@ class Banner extends React.Component {
         Banner_Topic: _this.state.input_Banner_Topic == undefined ? null : _this.state.input_Banner_Topic,
         Banner_Image_Path: _this.state.input_Banner_Image_Path == undefined ? null : _this.state.input_Banner_Image_Path,
         Banner_Description: !_this.state.input_Banner_Description ? null : draftToHtml(convertToRaw(_this.state.input_Banner_Description.getCurrentContent())),
+        CreateBy: !_this.state.CreateByCookies ? null : _this.state.CreateByCookies
       };
       await axios.post(`${APIUrl}Banner/UpdateDataBanner`, Tempdata)
         .then((response) => {
@@ -460,7 +462,8 @@ class Banner extends React.Component {
   DeleteDataBanner(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
     if (popconfirm) {
-      axios.delete(`${APIUrl}Banner/DeleteDataBanner?Banner_ID=` + val)
+        var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+        axios.delete(`${APIUrl}Banner/DeleteDataBanner?Banner_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           alert(response.data.message);
@@ -474,7 +477,8 @@ class Banner extends React.Component {
   }
 
   async SetDisplayBanner(val) {
-      await axios.put(`${APIUrl}Banner/SetDisplayBanner?Banner_ID=` + val)
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      await axios.put(`${APIUrl}Banner/SetDisplayBanner?Banner_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           await this.GetBannerTable();
@@ -524,16 +528,5 @@ class Banner extends React.Component {
       );
     });
   }
-}
-const customStyles = {
-  valueContainer: () => ({
-    height: 20,
-    alignItems: 'center',
-    display: 'flex',
-    flex: 1,
-    padding: '2px 8px',
-    position: 'relative',
-    overflow: 'hidden',
-  }),
 }
 export default Banner;

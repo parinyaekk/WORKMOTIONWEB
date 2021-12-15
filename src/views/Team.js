@@ -70,6 +70,7 @@ class Team extends React.Component {
                         <MDBCardBody>
                           <MDBDataTableV5
                             hover
+                            responsive
                             entriesOptions={[5, 20, 25]}
                             entries={25}
                             data={this.state.team_table}
@@ -92,6 +93,10 @@ class Team extends React.Component {
                       </div>
                       <div className="modal-body">
                           <div className="row">
+                            <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <label className="small mb-1">Team Sequence</label>
+                              <input className="form-control py-1" type="number" value={this.state.input_Team_Sequence} onChange={this.setStateinput_Team_Sequence} />
+                            </div>
                             <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                               <label className="small mb-1">Team Name</label>
                               <input className="form-control py-1" type="text" value={this.state.input_Team_Name} onChange={this.setStateinput_Team_Name} />
@@ -155,6 +160,13 @@ class Team extends React.Component {
                               <input id="TeamFile" type="file" class="form-control-file" onChange={this.onFileChange} />
                               {this.state.input_Team_Image_Path != null ? 
                                 <img class="table-img" src={`${APIImagePath}` + this.state.input_Team_Image_Path} /> : ""}
+                            </div>
+                            <div className="form-group col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              <label className="small mb-1">Hover Image</label>
+                              <br></br>
+                              <input id="TeamHoverFile" type="file" class="form-control-file" onChange={this.onFileHoverChange} />
+                              {this.state.input_Team_Image_Hover_Path != null ? 
+                                <img class="table-img" src={`${APIImagePath}` + this.state.input_Team_Image_Hover_Path} /> : ""}
                             </div>
                           </div>
                           <div className="row">
@@ -247,6 +259,7 @@ class Team extends React.Component {
       txtTopicPopData: 'Add',
       ResData: null,
       input_Team_ID: null,
+      input_Team_Sequence: null,
       input_Team_Name: '',
       input_Team_Position: '',
       input_Team_Personal_Story: '',
@@ -254,6 +267,7 @@ class Team extends React.Component {
       input_Team_Interest: '',
       input_Team_Contact_Channels: '',
       input_Team_Image_Path: null,
+      input_Team_Image_Hover_Path: null,
       team_table: [],
       ArrFile: [],
       columns: [
@@ -263,6 +277,11 @@ class Team extends React.Component {
         {
           label: 'Team Image',
           field: 'team_Image_Path',
+          width: 150
+        },
+        {
+          label: 'Team Hover Image',
+          field: 'team_Image_Hover_Path',
           width: 150
         },
         {
@@ -296,13 +315,18 @@ class Team extends React.Component {
           width: 100
         },
         {
+          label: 'Team Sequence',
+          field: 'team_Sequence',
+          width: 100
+        },
+        {
           label: 'Action',
           field: 'Action',
           sort: 'disabled',
           width: 100
         }
       ],
-      imagePathPop: ""
+      CreateByCookies: Cookies.get('IPAddress')
     };
   }
 
@@ -318,6 +342,7 @@ class Team extends React.Component {
       _this.setState({ loading: true });
       const Tempdata = {
         Team_ID: !_this.state.input_Team_ID ? null : _this.state.input_Team_ID,
+        Team_Sequence: !_this.state.input_Team_Sequence ? null : parseInt(_this.state.input_Team_Sequence),
         Team_Name: !_this.state.input_Team_Name ? null : _this.state.input_Team_Name,
         Team_Position: !_this.state.input_Team_Position ? null : _this.state.input_Team_Position,
         Team_Personal_Story: !_this.state.input_Team_Personal_Story ? null : draftToHtml(convertToRaw(_this.state.input_Team_Personal_Story.getCurrentContent())),
@@ -325,7 +350,9 @@ class Team extends React.Component {
         Team_Interest: !_this.state.input_Team_Interest ? null : draftToHtml(convertToRaw(_this.state.input_Team_Interest.getCurrentContent())),
         Team_Contact_Channels: !_this.state.input_Team_Contact_Channels ? null : _this.state.input_Team_Contact_Channels,
         Team_Image_Path: !_this.state.input_Team_Image_Path ? null : _this.state.input_Team_Image_Path,
-      };
+        Team_Image_Hover_Path: !_this.state.input_Team_Image_Hover_Path ? null : _this.state.input_Team_Image_Hover_Path,
+        CreateBy: !this.state.CreateByCookies ? null : this.state.CreateByCookies
+    };
       await axios.post(`${APIUrl}Team/UpdateDataTeam`, Tempdata)
         .then((response) => {
           if (response.data.status == 0) {
@@ -398,6 +425,7 @@ class Team extends React.Component {
     _this.setState({
       // txteditorteam_Personal_Story
       input_Team_ID: parseInt(teamID),
+      input_Team_Sequence: FindData[0].team_Sequence,
       input_Team_Name: FindData[0].team_Name,
       input_Team_Position: FindData[0].team_Position,
       input_Team_Personal_Story: txteditorteam_Personal_Story,
@@ -405,6 +433,7 @@ class Team extends React.Component {
       input_Team_Interest: txteditorteam_Interest,
       input_Team_Contact_Channels: FindData[0].team_Contact_Channels,
       input_Team_Image_Path: FindData[0].team_Image_Path,
+      input_Team_Image_Hover_Path: FindData[0].team_Image_Hover_Path,
     });
   }
 
@@ -416,12 +445,16 @@ class Team extends React.Component {
   ClosePopData() {
     $("#PopData").removeAttr("style").hide();
     var _this = this;
-    _this.setState({ txtTopicPopData: 'Add', input_Team_ID: null, input_Team_Topic: '', input_Team_Name: '', input_Team_Description: '', input_Team_Image_Path: null });
+    _this.setState({ txtTopicPopData: 'Add', input_Team_ID: null, input_Team_Topic: '', input_Team_Name: '', input_Team_Description: '', input_Team_Image_Path: null , input_Team_Image_Hover_Path: null});
     _this.forceUpdate();
   }
 
   onFileChange = event => {
     this.SaveFile(event.target.files[0]);
+  };
+
+  onFileHoverChange = event => {
+    this.SaveHoverFile(event.target.files[0]);
   };
 
   async SaveFile(file) {
@@ -437,6 +470,27 @@ class Team extends React.Component {
         if (response.data.status === 0) {
             this.setState({ input_Team_Image_Path: response.data.data });
             $('#TeamFile').val('');
+            this.forceUpdate();
+        }
+    })
+    .catch((err) => {
+        alert(err);
+    });
+  };
+
+  async SaveHoverFile(file) {
+    const data = new FormData();
+    data.append('input_Team_Image_Hover_Path', file);
+    await axios.post(`${APIUrl}Master/UploadImage`, data,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+    .then((response) => {
+        if (response.data.status === 0) {
+            this.setState({ input_Team_Image_Hover_Path: response.data.data });
+            $('#TeamHoverFile').val('');
             this.forceUpdate();
         }
     })
@@ -471,12 +525,14 @@ class Team extends React.Component {
             let TempSubData = {
               // no: (Number + (index + 1)),
               team_Image_Path: item.team_Image_Path,
+              team_Image_Hover_Path: item.team_Image_Hover_Path,
               team_Name: item.team_Name,
               team_Position: item.team_Position,
               team_Personal_Story: item.team_Personal_Story.length > 20 ? item.team_Personal_Story.substring(0,20) + "..." : item.team_Personal_Story,
               team_Education: item.team_Education.length > 20 ? item.team_Education.substring(0,20) + "..." : item.team_Education,
               team_Interest: item.team_Interest.length > 20 ? item.team_Interest.substring(0,20) + "..." : item.team_Interest,
               team_Contact_Channels: item.team_Contact_Channels,
+              team_Sequence: item.team_Sequence,
               Action: 
               <div>
                 <button style={{ marginTop: '-9px'}} type="button" class="btn btn-datatable" data-toggle="modal" data-target="#PopData" data-backdrop="static" onClick={() => this.OpenEditPopup(item.team_ID)}>
@@ -509,6 +565,10 @@ class Team extends React.Component {
       .finally(function () {
         _this.setState({ loading: false });
     });
+  }
+
+  setStateinput_Team_Sequence = event => {
+    this.setState({ input_Team_Sequence: event.target.value });
   }
 
   setStateinput_Team_Name = event => {
@@ -548,7 +608,8 @@ class Team extends React.Component {
   DeleteDataTeam(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
     if (popconfirm) {
-      axios.delete(`${APIUrl}Team/DeleteDataTeam?Team_ID=` + val)
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      axios.delete(`${APIUrl}Team/DeleteDataTeam?Team_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           alert(response.data.message);

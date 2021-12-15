@@ -72,6 +72,7 @@ class News extends React.Component {
                         <MDBCardBody>
                           <MDBDataTableV5
                             hover
+                            responsive
                             entriesOptions={[5, 20, 25]}
                             entries={25}
                             data={this.state.portfolio_table}
@@ -301,6 +302,7 @@ class News extends React.Component {
           width: 100
         }
       ],
+      CreateByCookies: Cookies.get('IPAddress')
     };
   }
 
@@ -488,7 +490,8 @@ class News extends React.Component {
         News_Publish_Date: this.state.input_News_Publish_Date == undefined ? null : this.state.input_News_Publish_Date,
         News_Tags: txtinput_News_Tags,
         File: temp,
-      };
+        CreateBy: !this.state.CreateByCookies ? null : this.state.CreateByCookies,
+    };
 
       const data = new FormData();
 
@@ -641,7 +644,8 @@ class News extends React.Component {
   DeleteDataNews(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
     if (popconfirm) {
-      axios.delete(`${APIUrl}News/DeleteDataNews?News_ID=` + val)
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      axios.delete(`${APIUrl}News/DeleteDataNews?News_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           alert(response.data.message);
@@ -655,7 +659,8 @@ class News extends React.Component {
   }
 
   async SetDisplayNews(val) {
-      await axios.put(`${APIUrl}News/SetDisplayNews?News_ID=` + val)
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      await axios.put(`${APIUrl}News/SetDisplayNews?News_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           await this.GetNewsTable();
