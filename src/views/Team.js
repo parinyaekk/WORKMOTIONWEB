@@ -72,12 +72,11 @@ class Team extends React.Component {
                             hover
                             responsive
                             entriesOptions={[5, 20, 25]}
-                            entries={25}
-                            data={this.state.team_table}
-                            pagingTop
+                            entries={5}
                             searchTop
                             searchBottom={false}
                             barReverse
+                            data={this.state.team_table}
                           />
                         </MDBCardBody>
                       </MDBCard>

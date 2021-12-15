@@ -67,12 +67,11 @@ class Partnership extends React.Component {
                             hover
                             responsive
                             entriesOptions={[5, 20, 25]}
-                            entries={25}
-                            data={this.state.portfolio_table}
-                            pagingTop
+                            entries={5}
                             searchTop
                             searchBottom={false}
                             barReverse
+                            data={this.state.portfolio_table}
                           />
                         </MDBCardBody>
                       </MDBCard>

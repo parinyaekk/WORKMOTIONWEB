@@ -68,16 +68,16 @@ class Banner extends React.Component {
                           </div>
                         </div>
                         <MDBCardBody>
+                          <button type="button" className="close" onClick={() => alert(this.state.PerPage)} data-dismiss="modal">&times;</button>
                           <MDBDataTableV5
                             hover
                             responsive
                             entriesOptions={[5, 20, 25]}
-                            entries={25}
-                            data={this.state.banner_table}
-                            pagingTop
+                            entries={5}
                             searchTop
                             searchBottom={false}
                             barReverse
+                            data={this.state.banner_table}
                           />
                         </MDBCardBody>
                       </MDBCard>
@@ -194,15 +194,6 @@ class Banner extends React.Component {
 
   async componentWillMount() {
     await this.GetBannerTable();
-    // await this.GetAllDataBanner();
-    // await this.GetDataCareCenter();
-    // await this.GetAllDataBannerPerpage(this.state.Page, this.state.PerPage, this.state.Search, this.state.StartDateSearch, this.state.EndDateSearch, this.state.SearchCareArea, this.state.SearchTypeName);
-    // await this.GetDataProvince();
-    // await this.GetDistrict();
-    // await this.GetSubDistrict();
-    // await this.GetStore();
-    // await this.GetProductType();
-    // await this.GetProduct();
   }
 
   constructor(props) {
@@ -283,6 +274,7 @@ class Banner extends React.Component {
           if (response.data.status == 0) {
             alert(response.data.message);
             window.location.reload();
+            // this.GetBannerTable();
           }
         })
         .catch((err) => {
@@ -408,7 +400,7 @@ class Banner extends React.Component {
               // no: (Number + (index + 1)),
               banner_Name: item.banner_Name,
               banner_Topic: item.banner_Topic,
-              banner_Description: item.banner_Description.length > 20 ? item.banner_Description.substring(0,20) + "..." : item.banner_Description,
+              banner_Description: !item.banner_Description ? null : item.banner_Description.length > 20 ? item.banner_Description.substring(0,20) + "..." : item.banner_Description,
               banner_Image_Path: item.banner_Image_Path,
               is_Display: <Switch onChange={() => this.SetDisplayBanner(item.banner_ID)} checked={item.is_Display} />,
               Action: 
@@ -443,6 +435,10 @@ class Banner extends React.Component {
       .finally(function () {
         _this.setState({ loading: false });
     });
+  }
+
+  test = event => {
+    alert(event)
   }
 
   setStateinput_Banner_Name = event => {
