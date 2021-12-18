@@ -68,7 +68,6 @@ class Banner extends React.Component {
                           </div>
                         </div>
                         <MDBCardBody>
-                          <button type="button" className="close" onClick={() => alert(this.state.PerPage)} data-dismiss="modal">&times;</button>
                           <MDBDataTableV5
                             hover
                             responsive
@@ -435,10 +434,6 @@ class Banner extends React.Component {
       .finally(function () {
         _this.setState({ loading: false });
     });
-  }
-
-  test = event => {
-    alert(event)
   }
 
   setStateinput_Banner_Name = event => {

@@ -444,7 +444,18 @@ class Team extends React.Component {
   ClosePopData() {
     $("#PopData").removeAttr("style").hide();
     var _this = this;
-    _this.setState({ txtTopicPopData: 'Add', input_Team_ID: null, input_Team_Topic: '', input_Team_Name: '', input_Team_Description: '', input_Team_Image_Path: null , input_Team_Image_Hover_Path: null});
+    _this.setState({ 
+      input_Team_ID: null,
+      input_Team_Sequence: '',
+      input_Team_Name: '',
+      input_Team_Position: '',
+      input_Team_Personal_Story: null,
+      input_Team_Education: null,
+      input_Team_Interest: null,
+      input_Team_Contact_Channels: '',
+      input_Team_Image_Path: null,
+      input_Team_Image_Hover_Path: null,
+    });
     _this.forceUpdate();
   }
 

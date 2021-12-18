@@ -482,7 +482,7 @@ class Fund extends React.Component {
   ClosePopData() {
     $("#PopData").removeAttr("style").hide();
     var _this = this;
-    _this.setState({ txtTopicPopData: 'Add', input_Banner_ID: null, input_Banner_Topic: '', input_Banner_Name: '', input_Banner_Description: '', input_Banner_Image_Path: null });
+    _this.setState({ txtTopicPopData: 'Add', input_Portfolio_ID: null, input_Portfolio_About: '', input_Portfolio_Name: '', input_Portfolio_Location: '', input_Portfolio_Contact_Website: '', input_Portfolio_Contact_LinkedIn: '', input_Portfolio_Logo_Path: null,input_FK_Industries_ID: null, input_Portfolio_Technology: []});
     _this.forceUpdate();
   }
 

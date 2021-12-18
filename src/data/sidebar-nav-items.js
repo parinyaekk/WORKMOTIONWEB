@@ -79,6 +79,48 @@ export default function () {
           },
           ],
         },
+        {
+          title: 'Master',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'Options Industries',
+            to: '/Industries',
+          },{
+            title: 'Options Categories',
+            to: '/Categories',
+          },{
+            title: 'Options StartUp',
+            to: '/StartUpOption',
+          },{
+            title: 'Options HDYH',
+            to: '/HDYH',
+          },
+          ],
+        },
+        {
+          title: 'Information',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'Information',
+            to: '/Information',
+          }
+          ],
+        },
+        {
+          title: 'Monitor Log',
+          htmlBefore: '<i class="material-icons">desktop_windows</i>',
+          open: false,
+          items: [{
+            title: 'Log',
+            to: '/LogSuccess',
+          },{
+            title: 'Log Exception',
+            to: '/LogException',
+          },
+          ],
+        },
       ]
     }
   ];

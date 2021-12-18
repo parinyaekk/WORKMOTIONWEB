@@ -558,7 +558,16 @@ class News extends React.Component {
   ClosePopData() {
     $("#PopData").removeAttr("style").hide();
     var _this = this;
-    _this.setState({ txtTopicPopData: 'Add', input_Banner_ID: null, input_Banner_Topic: '', input_Banner_Name: '', input_Banner_Description: '', input_Banner_Image_Path: null });
+    _this.setState({ 
+      input_News_ID: null,
+      input_News_Title: '',
+      input_News_Main_Image_Path: null,
+      input_News_Content: null,
+      ArrMultipleFile: [],
+      input_News_Tags: [],
+      input_News_Author: '',
+      input_News_Publish_Date: '',
+    });
     _this.forceUpdate();
   }
 
