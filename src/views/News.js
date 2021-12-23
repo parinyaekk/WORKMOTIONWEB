@@ -112,7 +112,7 @@ class News extends React.Component {
                             </div>
                             <div className="form-group center col-md-6" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                               <label className="small mb-1">News Publish Date</label>
-                              <input className="form-control py-1" type="date" value={this.state.input_News_Publish_Date} placeholder="dd/mm/yyyy" onChange={this.setStateinput_News_Publish_Date} />
+                              <input className="form-control py-1" type="date" value={this.state.input_News_Publish_Date} placeholder="mm/dd/yyyy" onChange={this.setStateinput_News_Publish_Date} />
                             </div>
                             <div className="form-group col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                               <label className="small mb-1">News Main Image</label>
@@ -429,8 +429,8 @@ class News extends React.Component {
       input_News_Content: txteditorState,
       input_News_Tags: Arr_News_Tags,
       input_News_Author: FindData[0].news_Author,
-      input_News_Publish_Date: FindData[0].news_Publish_Date,
-      // input_News_Publish_Date: FindData[0].news_Publish_Date == null ? "" : (parseInt(FindData[0].news_Publish_Date.split('/')[2]) + 543) + '-' + FindData[0].news_Publish_Date.split('/')[1] + '-' + FindData[0].news_Publish_Date.split('/')[0],
+      // input_News_Publish_Date: FindData[0].news_Publish_Date,
+      input_News_Publish_Date: FindData[0].news_Publish_Date == null ? "" : FindData[0].news_Publish_Date.split('-')[0] + '-' + FindData[0].news_Publish_Date.split('-')[1] + '-' + parseInt(FindData[0].news_Publish_Date.split('-')[2]),
     });
 
     // this.setState({ ArrMultipleFile: FindData[0].listImages });

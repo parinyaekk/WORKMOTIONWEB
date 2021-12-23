@@ -4,7 +4,7 @@ import { Container, Row, Col } from "shards-react";
 import "react-table/react-table.css";
 import $ from "jquery";
 import "../MainConfig";
-import { Plus } from 'react-feather';
+import { Download,Plus } from 'react-feather';
 import moment from 'moment';
 import Select from 'react-select';
 import Cookies from "js-cookie";
@@ -62,6 +62,7 @@ class Information extends React.Component {
                             </div>
                             <div className="col-md-6">
                               <div class="float-right">
+                                <button class="btn btn-outline-info" type="button" style={{ width: '100%', cursor: 'pointer' }} onClick={() => this.ExportExcel()}><Download />&nbsp; Export Excel</button>
                               </div>
                             </div>
                           </div>
@@ -259,6 +260,35 @@ class Information extends React.Component {
       .finally(function () {
         _this.setState({ loading: false });
     });
+  }
+
+  async ExportExcel() {
+    var _this = this;
+    _this.setState({ loading: true });
+    let temp = {
+      test: null
+    };
+    await axios.post(`${APIUrl}Master/ExportExcelDataInformation`,temp,
+      {
+        responseType: 'blob',
+      }).then(response => {
+        if (response.data != null) {
+          const url = URL.createObjectURL(new Blob([response.data], {
+            type: 'application/vnd.ms-excel'
+          }))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', moment(Date()).format("yyyyMMDDHHmm") + "_DataTellUsMore.xlsx")
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(function () {
+        _this.setState({ loading: false })
+      });
   }
 }
 export default Information;
