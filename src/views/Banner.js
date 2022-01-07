@@ -400,7 +400,10 @@ class Banner extends React.Component {
               banner_Name: item.banner_Name,
               banner_Topic: item.banner_Topic,
               banner_Description: !item.banner_Description ? null : item.banner_Description.length > 20 ? item.banner_Description.substring(0,20) + "..." : item.banner_Description,
-              banner_Image_Path: item.banner_Image_Path,
+              banner_Image_Path: item.banner_Image_Path == null ? "No Image" : 
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.banner_Image_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.banner_Image_Path) }
+              />,
               is_Display: <Switch onChange={() => this.SetDisplayBanner(item.banner_ID)} checked={item.is_Display} />,
               Action: 
               <div>

@@ -319,7 +319,10 @@ class Fund extends React.Component {
 
           response.data.data.map((item) => {
             let TempSubData = {
-              portfolio_Logo_Path: item.portfolio_Logo_Path,
+              portfolio_Logo_Path: item.portfolio_Logo_Path == null ? "No Image" : 
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.portfolio_Logo_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.portfolio_Logo_Path) }
+              />,
               portfolio_Name: item.portfolio_Name,
               // industries_Name: item.industries_Name,
               portfolio_About: item.portfolio_About.length > 20 ? item.portfolio_About.substring(0,20) + "..." : item.portfolio_About,

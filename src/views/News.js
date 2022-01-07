@@ -355,7 +355,10 @@ class News extends React.Component {
 
           response.data.data.map((item) => {
             let TempSubData = {
-              news_Main_Image_Path: item.news_Main_Image_Path,
+              news_Main_Image_Path: item.news_Main_Image_Path == null ? "No Image" : 
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.news_Main_Image_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.news_Main_Image_Path) }
+              />,
               news_Title: item.news_Title,
               news_Content: item.news_Content.length > 20 ? item.news_Content.substring(0,20) + "..." : item.news_Content,
               news_Author: item.news_Author,

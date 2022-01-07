@@ -534,8 +534,14 @@ class Team extends React.Component {
           response.data.data.map((item, index) => {
             let TempSubData = {
               // no: (Number + (index + 1)),
-              team_Image_Path: item.team_Image_Path,
-              team_Image_Hover_Path: item.team_Image_Hover_Path,
+              team_Image_Path: item.team_Image_Path == null ? "No Image" : 
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.team_Image_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.team_Image_Path) }
+              />,
+              team_Image_Hover_Path: item.team_Image_Hover_Path == null ? "No Image" : 
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.team_Image_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.team_Image_Path) }
+              />,
               team_Name: item.team_Name,
               team_Position: item.team_Position,
               team_Personal_Story: item.team_Personal_Story.length > 20 ? item.team_Personal_Story.substring(0,20) + "..." : item.team_Personal_Story,

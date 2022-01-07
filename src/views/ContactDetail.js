@@ -117,7 +117,7 @@ class ContactDetail extends React.Component {
                                   />
                                 </div>
                               </div>
-                              <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                              {/* <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                                 <label className="small mb-1">Google Maps</label>
                                 <div style={{ height: '50vh', width: '100%' }}>
                                   <LoadScript
@@ -137,7 +137,7 @@ class ContactDetail extends React.Component {
                                     </GoogleMap>
                                   </LoadScript>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                             <div className="row">
                               <div className="form-group col-md-12">
