@@ -294,6 +294,12 @@ class Industries extends React.Component {
     return "";
   }
 
+  convertTextEditor(val) {
+    var plainString = val.replace(/<[^>]+>/g, '');
+    console.log(plainString);
+    return plainString;
+  }
+  
   async GetOptionsIndustries() {
     var _this = this;
     _this.setState({ loading: true });
@@ -307,7 +313,7 @@ class Industries extends React.Component {
           response.data.data.map((item) => {
             let TempSubData = {
               industries_Name: item.industries_Name,
-              industries_Description: !item.industries_Description ? null : item.industries_Description.length > 40 ? item.industries_Description.substring(0,40) + " ..." : item.industries_Description,
+              industries_Description: !item.industries_Description ? null : this.convertTextEditor(item.industries_Description),
               Action: 
               <div>
                 <button style={{ marginTop: '-9px'}} type="button" class="btn btn-datatable" data-toggle="modal" data-target="#PopData" data-backdrop="static" onClick={() => this.OpenEditPopup(item.industries_ID)}>

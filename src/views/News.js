@@ -78,7 +78,7 @@ class News extends React.Component {
                             searchTop
                             searchBottom={false}
                             barReverse
-                            data={this.state.portfolio_table}
+                            data={this.state.News_table}
                           />
                         </MDBCardBody>
                       </MDBCard>
@@ -343,6 +343,12 @@ class News extends React.Component {
     }
   }
 
+  convertTextEditor(val) {
+    var plainString = val.replace(/<[^>]+>/g, '');
+    console.log(plainString);
+    return plainString;
+  }
+  
   async GetNewsTable() {
     var _this = this;
     _this.setState({ loading: true });
@@ -360,7 +366,7 @@ class News extends React.Component {
               onClick={() => window.open(`${APIImagePath}` + item.news_Main_Image_Path) }
               />,
               news_Title: item.news_Title,
-              news_Content: item.news_Content.length > 20 ? item.news_Content.substring(0,20) + "..." : item.news_Content,
+              news_Content: !item.news_Content ? null : this.convertTextEditor(item.news_Content),
               news_Author: item.news_Author,
               news_Tags: item.news_Tags,
               news_Publish_Date: item.news_Publish_Date,
@@ -389,7 +395,7 @@ class News extends React.Component {
             rows: TempData,
             columns: this.state.columns
           };
-          this.setState({ portfolio_table: dataTable });
+          this.setState({ News_table: dataTable });
           this.forceUpdate();
         }
       })

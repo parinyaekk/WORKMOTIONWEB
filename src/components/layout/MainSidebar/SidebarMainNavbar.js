@@ -45,7 +45,8 @@ class SidebarMainNavbar extends React.Component {
               )} */}
               {(
                 <span className="d-none d-md-inline ml-1">
-                  Top Venture Admin
+                  {/* Top Venture Admin */}
+                  <img className="d-inline-block align-center mr-1" style={{ maxWidth: "150px",cursor: 'pointer', border: '0px', padding: '0px', float: 'left' }} src={require("../../../images/Logo.png")} />
                 </span>
               )}
             </div>

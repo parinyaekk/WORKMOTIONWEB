@@ -384,6 +384,12 @@ class Banner extends React.Component {
     return "";
   }
 
+  convertTextEditor(val) {
+    var plainString = val.replace(/<[^>]+>/g, '');
+    console.log(plainString);
+    return plainString;
+  }
+
   async GetBannerTable() {
     var _this = this;
     _this.setState({ loading: true });
@@ -399,7 +405,8 @@ class Banner extends React.Component {
               // no: (Number + (index + 1)),
               banner_Name: item.banner_Name,
               banner_Topic: item.banner_Topic,
-              banner_Description: !item.banner_Description ? null : item.banner_Description.length > 20 ? item.banner_Description.substring(0,20) + "..." : item.banner_Description,
+              // banner_Description: !item.banner_Description ? null : item.banner_Description.length > 20 ? item.banner_Description.substring(0,20) + "..." : item.banner_Description,
+              banner_Description: !item.banner_Description ? null : this.convertTextEditor(item.banner_Description),
               banner_Image_Path: item.banner_Image_Path == null ? "No Image" : 
               <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.banner_Image_Path} 
               onClick={() => window.open(`${APIImagePath}` + item.banner_Image_Path) }

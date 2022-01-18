@@ -10,7 +10,7 @@ import Select from 'react-select';
 import Cookies from "js-cookie";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { EditorState, convertToRaw, ContentState, convertFromHTML } from "draft-js";
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import {
@@ -436,6 +436,12 @@ class Team extends React.Component {
     });
   }
 
+  convertTextEditor(val) {
+    var plainString = val.replace(/<[^>]+>/g, '');
+    console.log(plainString);
+    return plainString;
+  }
+
   CloseModal() {
     $("#ShowPic").removeAttr("style").hide();
     // $("#ShowDataDetail").removeAttr("style").hide();
@@ -539,14 +545,17 @@ class Team extends React.Component {
               onClick={() => window.open(`${APIImagePath}` + item.team_Image_Path) }
               />,
               team_Image_Hover_Path: item.team_Image_Hover_Path == null ? "No Image" : 
-              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.team_Image_Path} 
-              onClick={() => window.open(`${APIImagePath}` + item.team_Image_Path) }
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.team_Image_Hover_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.team_Image_Hover_Path) }
               />,
               team_Name: item.team_Name,
               team_Position: item.team_Position,
-              team_Personal_Story: item.team_Personal_Story.length > 20 ? item.team_Personal_Story.substring(0,20) + "..." : item.team_Personal_Story,
-              team_Education: item.team_Education.length > 20 ? item.team_Education.substring(0,20) + "..." : item.team_Education,
-              team_Interest: item.team_Interest.length > 20 ? item.team_Interest.substring(0,20) + "..." : item.team_Interest,
+              // team_Personal_Story: item.team_Personal_Story.length > 20 ? item.team_Personal_Story.substring(0,20) + "..." : item.team_Personal_Story,
+              team_Personal_Story: !item.team_Personal_Story ? null : this.convertTextEditor(item.team_Personal_Story),
+              // team_Education: item.team_Education.length > 20 ? item.team_Education.substring(0,20) + "..." : item.team_Education,
+              team_Education: !item.team_Education ? null : this.convertTextEditor(item.team_Education),
+              // team_Interest: item.team_Interest.length > 20 ? item.team_Interest.substring(0,20) + "..." : item.team_Interest,
+              team_Interest: !item.team_Interest ? null : this.convertTextEditor(item.team_Interest),
               team_Contact_Channels: item.team_Contact_Channels,
               team_Sequence: item.team_Sequence,
               Action: 
