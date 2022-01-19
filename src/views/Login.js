@@ -7,7 +7,9 @@ class Login extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-        IPAddress: '',
+            IPAddress: '',
+            Username: '',
+            Password: '',
         };
     } 
 
@@ -24,8 +26,23 @@ class Login extends React.Component{
     }
 
     LoginSubmit() {
-        Cookies.set('IPAddress', this.state.IPAddress, { expires: 0.5 })
-        window.location.href = "/Banner";
+        if(this.state.Username == "admin" && this.state.Password == "admin")
+        {
+            Cookies.set('IPAddress', this.state.IPAddress, { expires: 0.5 })
+            window.location.href = "/Banner";   
+        }
+        else
+        {
+            alert('Invalid Password !');
+        }
+    }
+
+    setStateUsername = event => {
+        this.setState({ Username: event.target.value });
+    }
+    
+    setStatePassword = event => {
+        this.setState({ Password: event.target.value });
     }
 
     render(){
@@ -40,15 +57,13 @@ class Login extends React.Component{
                                       <div class="card-header justify-content-center"><h3 class="font-weight-light my-4">Login</h3></div>
                                       <div class="card-body">
                                             <div class="form-group">
-                                                <label className="small mb-1" for="inputIPAddress">IP Address </label>
-                                                <input className="form-control py-4" id="inputIPAddress" type="text" value={this.state.IPAddress} readOnly/>
+                                                <label className="small mb-1" for="inputIPAddress">User Name </label>
+                                                <input className="form-control py-1" type="text" value={this.state.Username} onChange={this.setStateUsername} />
+                                                <label className="small mb-1" for="inputIPAddress">Password </label>
+                                                <input className="form-control py-4" type="password" value={this.state.Password} onChange={this.setStatePassword}/>
                                             </div>
                                             <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0 float-right">
-                                                {!this.state.IPAddress ? 
-                                                <button className="btn btn-primary" disabled>Login</button>
-                                                :
                                                 <button className="btn btn-primary" type="button" onClick={() => this.LoginSubmit()}>Login</button>
-                                                }
                                             </div>
                                       </div>
                                   </div>

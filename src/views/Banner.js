@@ -100,7 +100,7 @@ class Banner extends React.Component {
                               <label className="small mb-1">Banner Topic</label>
                               <input className="form-control py-1" type="text" value={this.state.input_Banner_Topic} onChange={this.setStateinput_Banner_Topic} />
                             </div>
-                            <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                            {/* <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                               <label className="small mb-1">Banner Description</label>
                               <div
                                 style={{
@@ -114,7 +114,7 @@ class Banner extends React.Component {
                                   onEditorStateChange={this.onEditorStateChangeinput_Banner_Description}
                                 />
                               </div>
-                            </div>
+                            </div> */}
                               <div className="form-group col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                                 <label className="small mb-1">Image</label>
                                 <br></br>
@@ -222,11 +222,11 @@ class Banner extends React.Component {
           field: 'banner_Topic',
           width: 270
         },
-        {
-          label: 'Banner_Description',
-          field: 'banner_Description',
-          width: 200
-        },
+        // {
+        //   label: 'Banner_Description',
+        //   field: 'banner_Description',
+        //   width: 200
+        // },
         {
           label: 'Banner_Image_Path',
           field: 'banner_Image_Path',
@@ -265,7 +265,7 @@ class Banner extends React.Component {
         Banner_Name: _this.state.input_Banner_Name == undefined ? null : _this.state.input_Banner_Name,
         Banner_Topic: _this.state.input_Banner_Topic == undefined ? null : _this.state.input_Banner_Topic,
         Banner_Image_Path: _this.state.input_Banner_Image_Path == undefined ? null : _this.state.input_Banner_Image_Path,
-        Banner_Description: !_this.state.input_Banner_Description ? null : draftToHtml(convertToRaw(_this.state.input_Banner_Description.getCurrentContent())),
+        // Banner_Description: !_this.state.input_Banner_Description ? null : draftToHtml(convertToRaw(_this.state.input_Banner_Description.getCurrentContent())),
         CreateBy: !_this.state.CreateByCookies ? null : _this.state.CreateByCookies
       };
       await axios.post(`${APIUrl}Banner/UpdateDataBanner`, Tempdata)
@@ -330,7 +330,7 @@ class Banner extends React.Component {
       input_Banner_ID: parseInt(bannerID),
       input_Banner_Name: FindData[0].banner_Name,
       input_Banner_Topic: FindData[0].banner_Topic,
-      input_Banner_Description: txteditorState,
+      // input_Banner_Description: txteditorState,
       input_Banner_Image_Path: FindData[0].banner_Image_Path,
     });
   }
@@ -406,7 +406,7 @@ class Banner extends React.Component {
               banner_Name: item.banner_Name,
               banner_Topic: item.banner_Topic,
               // banner_Description: !item.banner_Description ? null : item.banner_Description.length > 20 ? item.banner_Description.substring(0,20) + "..." : item.banner_Description,
-              banner_Description: !item.banner_Description ? null : this.convertTextEditor(item.banner_Description),
+              // banner_Description: !item.banner_Description ? null : this.convertTextEditor(item.banner_Description),
               banner_Image_Path: item.banner_Image_Path == null ? "No Image" : 
               <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.banner_Image_Path} 
               onClick={() => window.open(`${APIImagePath}` + item.banner_Image_Path) }
@@ -454,11 +454,11 @@ class Banner extends React.Component {
     this.setState({ input_Banner_Topic: event.target.value });
   }
 
-  onEditorStateChangeinput_Banner_Description = input_Banner_Description => {
-    this.setState({
-      input_Banner_Description,
-    });
-  };
+  // onEditorStateChangeinput_Banner_Description = input_Banner_Description => {
+  //   this.setState({
+  //     input_Banner_Description,
+  //   });
+  // };
 
   DeleteDataBanner(val) {
     var popconfirm = window.confirm('Confirm to delete ? [Ok/Cancel]');
