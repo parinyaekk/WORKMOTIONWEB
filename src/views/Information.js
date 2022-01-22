@@ -66,6 +66,15 @@ class Information extends React.Component {
                               </div>
                             </div>
                           </div>
+                          {/* <div className="row">
+                            <div className="col-md-6">
+                            </div>
+                            <div className="col-md-6">
+                              <div class="float-right">
+                                <button class="btn btn-outline-info" type="button" style={{ width: '100%', cursor: 'pointer' }} onClick={() => this.AddDataInformation()}><Download />&nbsp; Test</button>
+                              </div>
+                            </div>
+                          </div> */}
                         </div>
                         <MDBCardBody>
                           <MDBDataTableV5
@@ -191,6 +200,11 @@ class Information extends React.Component {
           width: 150
         },
         {
+          label: 'Phone',
+          field: 'information_Phone_Number',
+          width: 150
+        },
+        {
           label: 'Country Name',
           field: 'information_Country_Name',
           width: 150
@@ -220,6 +234,49 @@ class Information extends React.Component {
     };
   }
 
+  async AddDataInformation() {
+    var _this = this;
+    _this.setState({ loading: true });
+      const data = new FormData();
+      var Tempdata = {
+      FK_Startup_Option_ID: 1,
+      Information_Startup_Option_Text: "AddInformation_Startup_Option_Text",
+      FK_Industries_ID: 1,
+      Information_Industries_Text: "AddInformation_Industries_Text",
+      FK_Categories_ID: 1,
+      Information_Categories_Text: "AddInformation_Categories_Text",
+      FK_HDYH_Option_ID: 1,
+      Information_HDYH_Text: "AddInformation_HDYH_Text",
+      Information_HDYH_Other: null,
+      Information_Company_Name: "AddInformation_Company_Name",
+      Information_Phone_Number: "0123456789",
+      Information_Email: "AddInformation_Email",
+      Information_Country_ID: 1,
+      Information_Country_Name: "AddInformation_Country_Name",
+      Information_Profile: "AddInformation_Profile",
+      Information_Detail: "AddInformation_Detail",
+      Information_Looking_For: "AddInformation_Looking_For",
+      Information_Looking_For_Other: "AddInformation_Looking_For_Other",
+    };
+    data.append('files', null);
+    data.append('datas', JSON.stringify(Tempdata));
+
+    await axios
+      .post(`${APIUrl}Frontend/AddDataCompany`, data,
+      {
+          headers: {
+              "Content-Type": "multipart/form-data",
+          },
+      }).then(response => {
+        if (response.data.status == 0) {
+          alert(response.data.message)
+        }
+      })
+      .catch(err => console.log(err))
+      .finally(function () {
+        _this.setState({ loading: false });
+    });
+  }
   async GetDataInformation() {
     var _this = this;
     _this.setState({ loading: true });
@@ -239,6 +296,7 @@ class Information extends React.Component {
               information_HDYH_Other: item.information_HDYH_Other,
               information_Company_Name: item.information_Company_Name,
               information_Email: item.information_Email,
+              information_Phone_Number: item.information_Phone_Number,
               information_Country_Name: item.information_Country_Name,
               information_Profile: item.information_Profile,
               information_Detail: item.information_Detail,
