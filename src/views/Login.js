@@ -26,7 +26,7 @@ class Login extends React.Component{
     }
 
     LoginSubmit() {
-        if(this.state.Username == "admin" && this.state.Password == "admin")
+        if(this.state.Username.toLowerCase() == "admin" && this.state.Password == "admin")
         {
             Cookies.set('IPAddress', this.state.IPAddress, { expires: 0.5 })
             window.location.href = "/Banner";   

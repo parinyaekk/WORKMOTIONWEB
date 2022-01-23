@@ -290,6 +290,11 @@ class News extends React.Component {
           width: 150
         },
         {
+          label: 'Highlight',
+          field: 'is_Highlight',
+          width: 150
+        },
+        {
           label: 'Show',
           field: 'is_Display',
           width: 150
@@ -370,6 +375,7 @@ class News extends React.Component {
               news_Author: item.news_Author,
               news_Tags: item.news_Tags,
               news_Publish_Date: item.news_Publish_Date,
+              is_Highlight: <Switch onChange={() => this.SetHighlightNews(item.news_ID)} checked={item.is_Highlight} />,
               is_Display: <Switch onChange={() => this.SetDisplayNews(item.news_ID)} checked={item.is_Display} />,
               Action: 
               <div>
@@ -678,6 +684,19 @@ class News extends React.Component {
   async SetDisplayNews(val) {
       var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
       await axios.put(`${APIUrl}News/SetDisplayNews?News_ID=` + val + `&CreateBy=` + CreateBy)
+      .then(async (response) => {
+        if (response.data.status == 0) {
+          await this.GetNewsTable();
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
+  
+  async SetHighlightNews(val) {
+      var CreateBy = !this.state.CreateByCookies ? null : this.state.CreateByCookies;
+      await axios.put(`${APIUrl}News/SetHighlightNews?News_ID=` + val + `&CreateBy=` + CreateBy)
       .then(async (response) => {
         if (response.data.status == 0) {
           await this.GetNewsTable();
