@@ -294,7 +294,7 @@ class Information extends React.Component {
 
           response.data.data.map((item) => {
             let TempSubData = {
-              information_File: item.information_File[0] == null ? "No Image" : 
+              information_File: item.information_File[0] == null ? "No File" : 
               <a onClick={() => window.open(`${APIImagePath}` + item.information_File[0].information_File_Path) }>
                 <i className="material-icons mr-1" style={{"color":"black", "cursor":"pointer","fontSize":"20"}}>save</i>
                 {/* <label style={{"color":"white", "cursor":"pointer"}}>Download</label> */}
