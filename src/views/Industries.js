@@ -95,6 +95,13 @@ class Industries extends React.Component {
                               <label className="small mb-1">Industries Name</label>
                               <input className="form-control py-1" type="text" value={this.state.input_Industries_Name} onChange={this.setStateinput_Industries_Name} />
                             </div>
+                            <div className="form-group col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                                <label className="small mb-1">Image</label>
+                                <br></br>
+                                <input id="IndustriesFile" type="file" class="form-control-file" onChange={this.onFileChange} />
+                                {this.state.input_Industries_Image_Path != null ? 
+                                  <img class="table-img" src={`${APIImagePath}` + this.state.input_Industries_Image_Path} /> : ""}
+                              </div>
                             <div className="form-group center col-md-12" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                               <label className="small mb-1">Industries Description</label>
                               <div
@@ -205,6 +212,11 @@ class Industries extends React.Component {
           width: 150
         },
         {
+          label: 'Industries Image',
+          field: 'industries_Image_Path',
+          width: 150
+        },
+        {
           label: 'Industries Description',
           field: 'industries_Description',
           width: 270
@@ -234,6 +246,7 @@ class Industries extends React.Component {
         Industries_ID: _this.state.input_Industries_ID == undefined ? null : _this.state.input_Industries_ID,
         Industries_Name: _this.state.input_Industries_Name == undefined ? null : _this.state.input_Industries_Name,
         Industries_Description: !_this.state.input_Industries_Description ? null : draftToHtml(convertToRaw(_this.state.input_Industries_Description.getCurrentContent())),
+        Industries_Image_Path: !_this.state.input_Industries_Image_Path ? null : _this.state.input_Industries_Image_Path,
         CreateBy: !_this.state.CreateByCookies ? null : _this.state.CreateByCookies
       };
       await axios.put(`${APIUrl}Master/UpdateDataIndustries`, Tempdata)
@@ -271,6 +284,7 @@ class Industries extends React.Component {
     _this.setState({
       input_Industries_ID: parseInt(industriesID),
       input_Industries_Name: FindData[0].industries_Name,
+      input_Industries_Image_Path: FindData[0].industries_Image_Path,
       input_Industries_Description: txteditorState,
     });
   }
@@ -286,6 +300,31 @@ class Industries extends React.Component {
     _this.setState({ txtTopicPopData: 'Add', input_Industries_ID: null, input_Industries_Topic: '', input_Industries_Name: '', input_Industries_Description: '', input_Industries_Image_Path: null });
     _this.forceUpdate();
   }
+  
+  onFileChange = event => {
+    this.SaveFile(event.target.files[0]);
+  };
+
+  async SaveFile(file) {
+    const data = new FormData();
+    data.append('input_Industries_Image_Path', file);
+    await axios.post(`${APIUrl}Master/UploadImage`, data,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+    .then((response) => {
+        if (response.data.status === 0) {
+            this.setState({ input_Industries_Image_Path: response.data.data });
+            $('#IndustriesFile').val('');
+            this.forceUpdate();
+        }
+    })
+    .catch((err) => {
+        alert(err);
+    });
+  };
 
   ChangeFormatStringBR(value) {
     if (value != "" && value != null) {
@@ -313,6 +352,10 @@ class Industries extends React.Component {
           response.data.data.map((item) => {
             let TempSubData = {
               industries_Name: item.industries_Name,
+              industries_Image_Path: item.industries_Image_Path == null ? "No Image" : 
+              <img class="table-img" style={{cursor: 'pointer'}} src={`${APIImagePath}` + item.industries_Image_Path} 
+              onClick={() => window.open(`${APIImagePath}` + item.industries_Image_Path) }
+              />,
               industries_Description: !item.industries_Description ? null : this.convertTextEditor(item.industries_Description),
               Action: 
               <div>

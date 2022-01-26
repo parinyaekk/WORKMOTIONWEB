@@ -165,6 +165,11 @@ class Information extends React.Component {
       ArrFile: [],
       columns: [
         {
+          label: 'File Upload',
+          field: 'information_File',
+          width: 150
+        },
+        {
           label: 'Startup Option',
           field: 'information_Startup_Option_Text',
           width: 150
@@ -289,6 +294,11 @@ class Information extends React.Component {
 
           response.data.data.map((item) => {
             let TempSubData = {
+              information_File: item.information_File[0] == null ? "No Image" : 
+              <a onClick={() => window.open(`${APIImagePath}` + item.information_File[0].information_File_Path) }>
+                <i className="material-icons mr-1" style={{"color":"black", "cursor":"pointer","fontSize":"20"}}>save</i>
+                {/* <label style={{"color":"white", "cursor":"pointer"}}>Download</label> */}
+              </a>,
               information_Startup_Option_Text: item.information_Startup_Option_Text,
               information_Industries_Text: item.information_Industries_Text,
               information_Categories_Text: item.information_Categories_Text,

@@ -623,7 +623,7 @@ class News extends React.Component {
   };
 
   onFileDelete(value) {
-    this.state.ArrFile.splice(value, 1);
+    this.state.ArrMultipleFile.splice(value, 1);
     this.forceUpdate();
   };
   
